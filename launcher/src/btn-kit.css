@@ -1,0 +1,212 @@
+﻿/* btn-kit v1 — tokens */
+:root {
+  --btn-font: inherit;
+  --btn-radius: 6px;
+  --btn-ink: #16150f;            /* основной текст */
+  --btn-surface: #f6f4ef;        /* фон страницы */
+  --btn-accent: #16150f;         /* primary */
+  --btn-on-accent: #f6f4ef;      /* текст на primary */
+  --btn-danger: #b42318;
+  --btn-on-danger: #ffffff;
+  --btn-focus: #2348c9;
+  --btn-dur: 140ms;
+  --btn-ease: cubic-bezier(.2, 0, 0, 1);
+  /* нажатие: кнопка мягко уходит вглубь и тускнеет */
+  --btn-press-scale: 0.965;
+  --btn-press-alpha: 0.72;
+  --btn-press-in: 260ms;        /* вдавливание */
+  --btn-press-out: 520ms;       /* возврат — медленнее, «всплывает» */
+  --btn-press-ease: cubic-bezier(.22, 1, .36, 1);
+}
+
+/* base */
+.btn {
+  --_h: 40px; --_px: 16px; --_fs: 15px; --_gap: 8px; --_ico: 18px;
+  --_bg: transparent; --_fg: var(--btn-ink); --_bd: transparent;
+
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--_gap);
+  min-height: var(--_h);
+  padding: 0 var(--_px);
+  margin: 0;
+  font-family: var(--btn-font);
+  font-size: var(--_fs);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.005em;
+  color: var(--_fg);
+  background: var(--_bg);
+  border: 1px solid var(--_bd);
+  border-radius: var(--btn-radius);
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition-property: background-color, color, border-color, box-shadow, transform, opacity;
+  transition-duration: var(--btn-dur), var(--btn-dur), var(--btn-dur), var(--btn-dur), var(--btn-press-out), var(--btn-press-out);
+  transition-timing-function: var(--btn-ease), var(--btn-ease), var(--btn-ease), var(--btn-ease), var(--btn-press-ease), var(--btn-press-ease);
+}
+.btn svg { width: var(--_ico); height: var(--_ico); flex: none; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.btn > span { display: inline-flex; align-items: center; gap: var(--_gap); }
+
+@media (pointer: coarse) { .btn { --_h: 44px; } }
+
+/* sizes */
+.btn--sm { --_h: 32px; --_px: 12px; --_fs: 13px; --_gap: 6px; --_ico: 16px; }
+.btn--sm::before { content: ""; position: absolute; inset: -6px -2px; } /* hit area >= 44px */
+.btn--lg { --_h: 48px; --_px: 22px; --_fs: 16px; --_gap: 10px; --_ico: 20px; }
+.btn--block { display: flex; width: 100%; }
+.btn--icon { padding: 0; width: var(--_h); }
+
+/* variants */
+.btn--primary {
+  --_bg: var(--btn-accent); --_fg: var(--btn-on-accent);
+  --_bg-h: color-mix(in oklab, var(--btn-accent), var(--btn-on-accent) 14%);
+}
+.btn--secondary {
+  --_bd:   color-mix(in oklab, var(--btn-ink) 24%, transparent);
+  --_bd-h: color-mix(in oklab, var(--btn-ink) 48%, transparent);
+  --_bg-h: color-mix(in oklab, var(--btn-ink) 5%, transparent);
+}
+.btn--ghost {
+  --_bg-h: color-mix(in oklab, var(--btn-ink) 7%, transparent);
+}
+.btn--danger {
+  --_bg: var(--btn-danger); --_fg: var(--btn-on-danger);
+  --_bg-h: color-mix(in oklab, var(--btn-danger), var(--btn-on-danger) 14%);
+}
+.btn--danger-soft {
+  --_fg: var(--btn-danger);
+  --_bd:   color-mix(in oklab, var(--btn-danger) 40%, transparent);
+  --_bd-h: var(--btn-danger);
+  --_bg-h: color-mix(in oklab, var(--btn-danger) 7%, transparent);
+}
+.btn--link {
+  --_h: auto; --_px: 0; --_fg: var(--btn-accent);
+  border: 0;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.25em;
+  border-radius: 2px;
+}
+
+/* interaction */
+@media (hover: hover) {
+  .btn:hover {
+    background: var(--_bg-h, var(--_bg));
+    border-color: var(--_bd-h, var(--_bd));
+    color: var(--_fg-h, var(--_fg));
+  }
+  .btn--link:hover { text-decoration-thickness: 2px; }
+  .btn:hover .btn__end { transform: translateX(2px); }
+}
+.btn:active {
+  background: var(--_bg-h, var(--_bg));
+  border-color: var(--_bd-h, var(--_bd));
+  transform: scale(var(--btn-press-scale));
+  opacity: var(--btn-press-alpha);
+  transition-duration: var(--btn-dur), var(--btn-dur), var(--btn-dur), var(--btn-dur), var(--btn-press-in), var(--btn-press-in);
+}
+.btn:focus-visible { outline: 2px solid var(--btn-focus); outline-offset: 2px; }
+.btn__end { transition: transform var(--btn-dur) var(--btn-ease); }
+
+/* toggle (aria-pressed) */
+.btn[aria-pressed="true"] {
+  --_bg:   color-mix(in oklab, var(--btn-ink) 9%, transparent);
+  --_bg-h: color-mix(in oklab, var(--btn-ink) 12%, transparent);
+  --_bd:   color-mix(in oklab, var(--btn-ink) 60%, transparent);
+  --_bd-h: var(--_bd);
+}
+.btn[aria-pressed="true"] .btn__fill-on { fill: currentColor; }
+
+/* disabled — после hover/active, чтобы перебивать их */
+.btn:is(:disabled, [aria-disabled="true"]) {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+  background: var(--_bg);
+  border-color: var(--_bd);
+  color: var(--_fg);
+}
+.btn:is(:disabled, [aria-disabled="true"]) .btn__end { transform: none; }
+
+/* loading — ширина не прыгает, текст прячется, спиннер по центру */
+.btn[aria-busy="true"] { color: transparent; pointer-events: none; transition-duration: 0ms; }
+.btn[aria-busy="true"]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: calc(var(--_ico) - 2px);
+  height: calc(var(--_ico) - 2px);
+  border: 2px solid var(--_fg);
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: btn-spin 700ms linear infinite;
+}
+@keyframes btn-spin { to { transform: rotate(1turn); } }
+
+/* label swap: idle / done / error лежат друг на друге — ширина = самой длинной подписи */
+.btn__swap { display: grid !important; }
+.btn__swap > * { grid-area: 1 / 1; display: inline-flex; align-items: center; justify-content: center; gap: var(--_gap); visibility: hidden; }
+.btn:not([data-state]) .btn__swap > :first-child,
+.btn[data-state="idle"]  .btn__swap > [data-when="idle"],
+.btn[data-state="done"]  .btn__swap > [data-when="done"],
+.btn[data-state="error"] .btn__swap > [data-when="error"] { visibility: visible; }
+
+/* hold-to-confirm */
+.btn--hold { overflow: hidden; -webkit-touch-callout: none; }
+.btn--hold .btn__fill {
+  position: absolute; inset: 0;
+  background: color-mix(in oklab, var(--_fg) 18%, transparent);
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 220ms var(--btn-ease);
+  pointer-events: none;
+}
+.btn--hold.is-holding .btn__fill { transform: scaleX(1); transition: transform var(--hold-ms, 1200ms) linear; }
+.btn--hold > :not(.btn__fill) { position: relative; }
+
+/* keyboard hint */
+.btn kbd {
+  font: 500 11px/1 ui-monospace, "IBM Plex Mono", monospace;
+  padding: 3px 5px;
+  border-radius: 3px;
+  border: 1px solid color-mix(in oklab, currentColor 25%, transparent);
+  opacity: 0.75;
+}
+
+/* groups */
+.btn-group { display: inline-flex; isolation: isolate; }
+.btn-group > .btn:not(:first-child) { margin-left: -1px; border-top-left-radius: 0; border-bottom-left-radius: 0; }
+.btn-group > .btn:not(:last-child)  { border-top-right-radius: 0; border-bottom-right-radius: 0; }
+.btn-group > .btn:is(:hover, :focus-visible) { z-index: 1; }
+.btn-group > .btn--primary + .btn--primary,
+.btn-group > .btn--danger + .btn--danger { margin-left: 0; box-shadow: inset 1px 0 0 color-mix(in oklab, var(--_fg) 28%, transparent); }
+
+/* segmented control */
+.btn-seg {
+  display: inline-flex; gap: 2px; padding: 3px;
+  background: color-mix(in oklab, var(--btn-ink) 6%, transparent);
+  border-radius: calc(var(--btn-radius) + 3px);
+}
+.btn-seg > .btn { --_h: 30px; --_px: 12px; --_fs: 13px; --_fg: color-mix(in oklab, var(--btn-ink) 68%, transparent); --_fg-h: var(--btn-ink); }
+.btn-seg > .btn[aria-pressed="true"] {
+  --_bg: var(--btn-surface); --_bg-h: var(--btn-surface); --_fg: var(--btn-ink);
+  --_bd: transparent;
+  box-shadow: 0 0 0 1px color-mix(in oklab, var(--btn-ink) 10%, transparent), 0 1px 2px color-mix(in oklab, var(--btn-ink) 14%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn__end { transition-duration: 0ms; }
+  .btn:active { transform: none; } /* остаётся только мягкое затухание */
+  .btn[aria-busy="true"]::after { animation-duration: 1600ms; }
+}
+@media (forced-colors: active) {
+  .btn { border-color: ButtonText; }
+  .btn[aria-busy="true"]::after { border-color: ButtonText; border-right-color: transparent; }
+}

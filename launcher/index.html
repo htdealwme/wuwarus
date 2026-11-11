@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WuWa RU</title>
+  <link rel="stylesheet" href="/src/btn-kit.css">
+  <link rel="stylesheet" href="/src/styles.css">
+  <script type="module" src="/src/main.ts"></script>
+</head>
+<body>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5.5v13l10-6.5z"/></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-12M9 7V4h6v3"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/></symbol>
+    <symbol id="i-folder" viewBox="0 0 24 24"><path d="M4 7a2 2 0 0 1 2-2h4l2 2h6a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M19 12a7 7 0 1 1-2.05-4.95M19 5v4h-4"/></symbol>
+  </svg>
+
+  <main class="shell">
+    <header class="mast">
+      <h1>WuWa<em>RU</em></h1>
+      <p class="mast-meta">Русификатор Wuthering Waves<br><span id="repo"></span></p>
+    </header>
+
+    <section class="risk" id="risk" hidden aria-labelledby="risk-h">
+      <h2 id="risk-h">Прежде чем ставить</h2>
+      <p>Перевод ставится как pak-мод в папку игры. Kuro Games такие моды официально не поддерживает: формально это нарушение правил игры, и после патча перевод может перестать работать до нашего обновления. Ставите на свой риск.</p>
+      <button class="btn btn--secondary" id="accept-risk">Понимаю, продолжить</button>
+    </section>
+
+    <dl class="rows">
+      <div class="row">
+        <dt>Игра</dt>
+        <dd><span id="game-path" class="value">не указана</span></dd>
+        <dd class="row-actions">
+          <button class="btn btn--ghost btn--sm" id="detect"><svg aria-hidden="true"><use href="#i-search"/></svg>Найти</button>
+          <button class="btn btn--ghost btn--sm" id="pick"><svg aria-hidden="true"><use href="#i-folder"/></svg>Выбрать папку</button>
+        </dd>
+      </div>
+      <div class="row">
+        <dt>Установлено</dt>
+        <dd><span id="installed" class="value">ничего</span></dd>
+        <dd class="row-actions"></dd>
+      </div>
+      <div class="row">
+        <dt>На GitHub</dt>
+        <dd>
+          <span id="latest" class="value">проверяю…</span>
+          <span id="notes" class="note"></span>
+        </dd>
+        <dd class="row-actions">
+          <button class="btn btn--ghost btn--sm btn--icon" id="refresh" aria-label="Проверить обновления"><svg aria-hidden="true"><use href="#i-refresh"/></svg></button>
+        </dd>
+      </div>
+    </dl>
+
+    <div class="progress" id="progress" hidden>
+      <div class="bar"><span id="bar"></span></div>
+      <span class="progress-text" id="progress-text"></span>
+    </div>
+
+    <footer class="actions">
+      <p class="msg" id="msg" role="status" aria-live="polite"></p>
+      <button class="btn btn--danger-soft" id="uninstall"><svg aria-hidden="true"><use href="#i-trash"/></svg>Убрать перевод</button>
+      <button class="btn btn--secondary" id="install"><svg aria-hidden="true"><use href="#i-download"/></svg><span id="install-label">Установить перевод</span></button>
+      <button class="btn btn--primary btn--lg" id="play"><svg aria-hidden="true"><use href="#i-play"/></svg>Играть</button>
+    </footer>
+  </main>
+</body>
+</html>

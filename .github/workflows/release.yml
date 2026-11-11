@@ -1,0 +1,35 @@
+name: Release translation
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install repak
+        run: cargo install --locked repak_cli
+
+      - name: Pack translation
+        run: |
+          mkdir -p out
+          find translation/pak -name .gitkeep -delete
+          if [ -z "$(ls -A translation/pak)" ]; then
+            echo "translation/pak is empty" >&2
+            exit 1
+          fi
+          repak pack --version V11 translation/pak out/wuwarus_ru_P.pak
+
+      - name: Write manifest
+        run: python3 tools/make_manifest.py "$GITHUB_REPOSITORY" "$GITHUB_REF_NAME" translation/release.json out/*.pak > out/manifest.json
+
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" out/*.pak out/manifest.json --title "Перевод $GITHUB_REF_NAME" --notes-file <(python3 -c "import json;print(json.load(open('translation/release.json',encoding='utf-8')).get('notes') or '')")
