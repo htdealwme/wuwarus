@@ -32,4 +32,4 @@ jobs:
       - name: Publish release
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release create "$GITHUB_REF_NAME" out/*.pak out/manifest.json --title "Перевод $GITHUB_REF_NAME" --notes-file <(python3 -c "import json;print(json.load(open('translation/release.json',encoding='utf-8')).get('notes') or '')")
+        run: gh release create "$GITHUB_REF_NAME" out/*.pak out/manifest.json --title "Перевод $GITHUB_REF_NAME" --latest --notes-file <(python3 -c "import json;print(json.load(open('translation/release.json',encoding='utf-8')).get('notes') or '')")
